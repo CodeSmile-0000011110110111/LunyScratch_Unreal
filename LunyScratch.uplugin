@@ -1,0 +1,17 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "0.1.0",
+  "FriendlyName": "LunyScratch for Unreal",
+  "Description": "Scratch-like API",
+  "Category": "Scripting",
+  "CreatedBy": "CodeSmile",
+  "CreatedByURL": "https://github.com/CodeSmile-0000011110110111",
+  "DocsURL": "https://github.com/CodeSmile-0000011110110111/LunyScratch_Unreal/blob/main/README.md",
+  "MarketplaceURL": "",
+  "SupportURL": "https://github.com/CodeSmile-0000011110110111",
+  "CanContainContent": false,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": true,
+  "Installed": false
+}
