@@ -1,4 +1,3 @@
-#if UNREAL
 using UnrealSharp.CoreUObject;
 using UnrealSharp.Engine;
 
@@ -30,4 +29,3 @@ public class UnrealEngineObject : IEngineObject
 
 	public Object GetEngineObject() => _engineObject;
 }
-#endif

@@ -1,4 +1,3 @@
-#if UNREAL
 using UnrealSharp.CoreUObject;
 using UnrealSharp.Engine;
 
@@ -15,4 +14,3 @@ public sealed class UnrealActions : IEngineActions
 	public void PlaySound(String soundName, Double volume) => throw new NotImplementedException();
 
 }
-#endif

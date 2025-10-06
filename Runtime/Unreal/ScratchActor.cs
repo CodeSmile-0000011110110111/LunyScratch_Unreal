@@ -1,4 +1,3 @@
-#if UNREAL
 using UnrealSharp.Attributes;
 using UnrealSharp.Engine;
 
@@ -23,4 +22,3 @@ public /*abstract*/ class AScratchActor : AActor
 	protected virtual void OnReady() {}
 	protected virtual void OnUpdate(Single deltaTime) {}
 }
-#endif

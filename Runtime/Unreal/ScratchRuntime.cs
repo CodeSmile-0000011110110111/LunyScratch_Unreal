@@ -1,4 +1,3 @@
-#if UNREAL
 using UnrealSharp.Attributes;
 using UnrealSharp.UnrealSharpCore;
 
@@ -7,11 +6,11 @@ namespace LunyScratch;
 [UClass]
 public sealed class UScratchRuntime : UCSGameInstanceSubsystem, IEngineRuntime
 {
-	private static UScratchRuntime s_Instance;
+	private static UScratchRuntime? s_Instance;
 
 	private readonly BlockRunner _blockRunner = new();
 
-	public static UScratchRuntime Instance => s_Instance;
+	public static UScratchRuntime Instance => s_Instance ?? throw new Exception("Scratch Runtime: Instance not initialized");
 
 	protected override void Initialize(FSubsystemCollectionBaseRef collection)
 	{
@@ -29,7 +28,7 @@ public sealed class UScratchRuntime : UCSGameInstanceSubsystem, IEngineRuntime
 	public override void Dispose()
 	{
 		base.Dispose();
-		GameEngine.Dispose();
+		GameEngine.Shutdown();
 		s_Instance = null;
 	}
 
@@ -40,4 +39,3 @@ public sealed class UScratchRuntime : UCSGameInstanceSubsystem, IEngineRuntime
 
 	public void RunBlock(IScratchBlock block) => _blockRunner.AddBlock(block);
 }
-#endif
