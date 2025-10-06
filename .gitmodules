@@ -1,4 +1,6 @@
 [submodule "Source/LunyScratch/Core"]
-	path = Source/LunyScratch/Core
+	path = Runtime/Core
 	url = https://github.com/CodeSmile-0000011110110111/LunyScratch_Core.git
 	branch = main
+[submodule "core"]
+	path = Runtime/core
