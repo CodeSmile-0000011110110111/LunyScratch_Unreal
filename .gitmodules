@@ -2,3 +2,4 @@
 	path = Runtime/Core
 	url = https://github.com/CodeSmile-0000011110110111/LunyScratch_Core.git
 	branch = main
+    update = merge
