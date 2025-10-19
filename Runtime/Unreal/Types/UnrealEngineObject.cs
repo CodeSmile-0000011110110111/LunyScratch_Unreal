@@ -10,6 +10,7 @@ namespace LunyScratch
 		public static implicit operator UnrealEngineObject(UObject unrealObject) => new(unrealObject);
 
 		public UnrealEngineObject(UObject unrealObject) => _engineObject = unrealObject;
+
 		public void SetEnabled(Boolean enabled)
 		{
 			switch (_engineObject)
