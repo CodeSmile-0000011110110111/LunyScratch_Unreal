@@ -30,12 +30,73 @@ namespace LunyScratch
 
 		public IEngineObject FindChild(string name)
 		{
-			// Minimal implementation (engine-specific search omitted). Always return null and cache.
 			if (string.IsNullOrEmpty(name))
 				return null;
 
 			if (_childrenByName.TryGetValue(name, out var cached))
 				return cached;
+
+			// Use the actor's scene component hierarchy as the search space, similar to Unity's Transform hierarchy.
+			var root = _owner.GetComponentByClass<USceneComponent>();
+			USceneComponent found = null;
+
+			string GetObjectName(UnrealSharp.CoreUObject.UObject obj)
+			{
+				// UnrealSharp may not expose GetName; ToString typically returns the object name
+				return obj?.ToString();
+			}
+
+			if (root != null)
+			{
+				// First, check direct children (non-recursive) to mirror Unity's fast path
+				System.Collections.Generic.IList<USceneComponent> directChildren;
+				root.GetChildrenComponents(false, out directChildren);
+				foreach (var child in directChildren)
+				{
+					if (child != null && string.Equals(GetObjectName(child), name, System.StringComparison.InvariantCulture))
+					{
+						found = child;
+						break;
+					}
+				}
+
+				// If not found, recurse through all descendants
+				if (found == null)
+				{
+					System.Collections.Generic.IList<USceneComponent> allDescendants;
+					root.GetChildrenComponents(true, out allDescendants);
+					foreach (var child in allDescendants)
+					{
+						if (child != null && string.Equals(GetObjectName(child), name, System.StringComparison.InvariantCulture))
+						{
+							found = child;
+							break;
+						}
+					}
+				}
+			}
+
+			if (found != null)
+			{
+				var engineObject = new UnrealEngineObject(found);
+				_childrenByName[name] = engineObject;
+				return engineObject;
+			}
+
+			// Fallback: scan all scene components on the actor (non-hierarchical)
+			var componentsOfActor = _owner.GetComponentsByClass<USceneComponent>();
+			if (componentsOfActor != null)
+			{
+				foreach (var comp in componentsOfActor)
+				{
+					if (comp != null && string.Equals(GetObjectName(comp), name, System.StringComparison.InvariantCulture))
+					{
+						var engineObject = new UnrealEngineObject(comp);
+						_childrenByName[name] = engineObject;
+						return engineObject;
+					}
+				}
+			}
 
 			_childrenByName[name] = null; // cache miss
 			return null;

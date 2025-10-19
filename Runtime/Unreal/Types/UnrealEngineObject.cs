@@ -17,6 +17,9 @@ namespace LunyScratch
 			{
 				case AActor actor:
 					actor.ActorTickEnabled = enabled;
+					var scene = actor.GetComponentByClass<USceneComponent>();
+					if (scene != null)
+						scene.SetHiddenInGame(!enabled);
 					break;
 
 				case USceneComponent sceneComponent:

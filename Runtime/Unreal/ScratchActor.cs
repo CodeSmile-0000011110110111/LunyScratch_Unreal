@@ -19,7 +19,7 @@ namespace LunyScratch
 			base.BeginPlay();
 			_context = new ScratchActorContext(this);
 			_runner = new BlockRunner(_context);
-			OnReady();
+			OnComponentReady();
 		}
 
 		public override void Tick(Single deltaTime)
@@ -48,7 +48,7 @@ namespace LunyScratch
 		public void RepeatForeverPhysics(params IScratchBlock[] blocks) => _runner.AddPhysicsBlock(Blocks.RepeatForever(blocks));
 		public void When(EventBlock evt, params IScratchBlock[] blocks) => _runner.AddBlock(Blocks.When(evt, blocks));
 
-		protected virtual void OnReady() {}
+		protected virtual void OnComponentReady() {}
 		protected virtual void OnUpdate(Single deltaTime) {}
 	}
 }

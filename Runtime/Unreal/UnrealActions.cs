@@ -1,3 +1,4 @@
+using UnrealSharp.CoreUObject;
 using UnrealSharp.Engine;
 
 namespace LunyScratch
@@ -24,11 +25,11 @@ namespace LunyScratch
 
 		public void QuitApplication() => throw new NotImplementedException();
 		public Double GetDeltaTimeInSeconds() => UGameplayStatics.WorldDeltaSeconds;
-		public void LogInfo(String message) => throw new NotImplementedException();
+		public void LogInfo(String message) => AActor.PrintString(message, printToScreen: false);
 
-		public void LogWarn(String message) => throw new NotImplementedException();
+		public void LogWarn(String message) => AActor.PrintString(message, printToScreen: false, color: new FLinearColor(0f, 1f, 1f));
 
-		public void LogError(String message) => throw new NotImplementedException();
+		public void LogError(String message) => AActor.PrintString(message, printToScreen: false, color: new FLinearColor(1f, 0f, 0f));
 		public void ShowMessage(String message, Double duration = 2f) => AActor.PrintString(message, (Single)duration);
 
 		public void Log(String message) => ShowMessage(message);
