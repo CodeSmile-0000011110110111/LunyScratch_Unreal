@@ -6,18 +6,24 @@ namespace LunyScratch
 {
 	internal sealed class ScratchActorContext : IScratchContext, IDisposable
 	{
-		private readonly AScratchActor _owner;
+		private readonly AActor _owner;
 		private readonly Dictionary<string, IEngineObject> _childrenByName = new();
 		private bool _scheduledForDestruction;
 
-		public ScratchActorContext(AScratchActor owner) => _owner = owner;
+		public ScratchActorContext(AActor owner)
+		{
+			if (owner is not IScratchRunner)
+				throw new ArgumentNullException(nameof(owner), $"does not implement {nameof(IScratchRunner)}");
+			
+			_owner = owner;
+		}
 
 		public IRigidbody Rigidbody => null; // Not implemented for Unreal example
 		public ITransform Transform => null; // Not implemented for Unreal example
 		public IEngineAudioSource Audio => null; // Not implemented for Unreal example
 
 		public IEngineObject Self => new UnrealEngineObject(_owner);
-		public IScratchRunner Runner => _owner;
+		public IScratchRunner Runner => _owner as IScratchRunner;
 		public IEngineCamera ActiveCamera => throw new NotSupportedException("ActiveCamera is not implemented for Unreal example");
 
 		public void SetSelfComponentEnabled(bool enabled) => _owner.ActorTickEnabled = enabled;
