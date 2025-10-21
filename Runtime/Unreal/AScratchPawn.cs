@@ -1,12 +1,10 @@
-using UnrealSharp.Attributes;
-using UnrealSharp.CoreUObject;
+﻿using UnrealSharp.Attributes;
 using UnrealSharp.Engine;
 
 namespace LunyScratch
 {
-	// FIXME: UnrealSharp currently doesn't allow abstract AActor subclassing => https://github.com/UnrealSharp/UnrealSharp/issues/560
 	[UClass]
-	public /*abstract*/ class AScratchActor : AActor, IScratchRunner
+	public /*abstract*/ class AScratchPawn : APawn, IScratchRunner
 	{
 		private readonly Table _variables = new();
 		private BlockRunner _runner;

@@ -16,8 +16,6 @@ namespace LunyScratch
 
 		protected override void BeginPlay()
 		{
-			AActor.PrintString("BeginPlay", color:new FLinearColor(1,0,0));
-
 			base.BeginPlay();
 			_context = new ScratchActorContext(this);
 			_runner = new BlockRunner(_context);
