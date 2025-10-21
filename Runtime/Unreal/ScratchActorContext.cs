@@ -14,7 +14,7 @@ namespace LunyScratch
 		{
 			if (owner is not IScratchRunner)
 				throw new ArgumentNullException(nameof(owner), $"does not implement {nameof(IScratchRunner)}");
-			
+
 			_owner = owner;
 		}
 

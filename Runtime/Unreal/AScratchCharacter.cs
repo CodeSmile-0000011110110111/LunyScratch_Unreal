@@ -5,7 +5,7 @@ using UnrealSharp.Engine;
 namespace LunyScratch
 {
 	[UClass]
-	public /*abstract*/ class AScratchPlayer : APlayerController, IScratchRunner
+	public /*abstract*/ class AScratchCharacter : ACharacter, IScratchRunner
 	{
 		private readonly Table _variables = new();
 		private BlockRunner _runner;
