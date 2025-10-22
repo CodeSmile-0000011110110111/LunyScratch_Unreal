@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using UnrealSharp;
+using UnrealSharp.Attributes;
 using UnrealSharp.CoreUObject;
 using UnrealSharp.Engine;
 
@@ -6,6 +10,7 @@ namespace LunyScratch
 	internal sealed class ScratchActorContext : IScratchContext, IDisposable
 	{
 		private readonly Dictionary<String, IEngineObject> _childrenByName = new();
+		private readonly HashSet<AActor> _collisionEnterQueue = new();
 		private AActor _owner;
 		private Boolean _scheduledForDestruction;
 
@@ -31,7 +36,9 @@ namespace LunyScratch
 
 		public void Dispose()
 		{
+			// Clear caches
 			_childrenByName.Clear();
+			_collisionEnterQueue.Clear();
 			_owner = null;
 		}
 
@@ -71,7 +78,7 @@ namespace LunyScratch
 						break;
 					}
 				}
-
+				
 				// If not found, recurse through all descendants
 				if (found == null)
 				{
@@ -113,9 +120,32 @@ namespace LunyScratch
 			_childrenByName[name] = null; // cache miss
 			return null;
 		}
+		
+		public Boolean QueryCollisionEnterEvents(String nameFilter, String tagFilter)
+		{
+			foreach (var other in _collisionEnterQueue)
+			{
+				var otherName = other?.ToString();
+				var nameOk = nameFilter == null || String.Equals(otherName, nameFilter, StringComparison.InvariantCulture);
+				var tagOk = true;
+				if (tagFilter != null)
+				{
+					// Unreal uses FName for tags
+					tagOk = other != null && other.ActorHasTag(new FName(tagFilter));
+				}
+				if (nameOk && tagOk)
+					return true;
+			}
+			return false;
+		}
 
-		public Boolean QueryCollisionEnterEvents(String nameFilter, String tagFilter) =>
-			// Collision event queue not wired for Unreal example; return false
-			false;
+		internal void EnqueueCollisionEnter(AActor other)
+		{
+			if (other != null)
+				_collisionEnterQueue.Add(other);
+		}
+
+		public void ClearCollisionEventQueues() => _collisionEnterQueue.Clear();
+
 	}
 }

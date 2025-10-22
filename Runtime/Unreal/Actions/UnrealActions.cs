@@ -117,7 +117,11 @@ namespace LunyScratch
 
 		private static Boolean IsValid(in FKey key) => key.IsValid;
 
-		public IEngineObject InstantiatePrefab(IEnginePrefabAsset prefab, ITransform transform) => throw new NotImplementedException();
+		public IEngineObject InstantiatePrefab(IEnginePrefabAsset prefab, ITransform transform)
+		{
+			LogWarn($"Instantiate not implemented: {prefab}, {transform}");
+			return null;
+		}
 
 		public void ReloadCurrentScene() => throw new NotImplementedException();
 
