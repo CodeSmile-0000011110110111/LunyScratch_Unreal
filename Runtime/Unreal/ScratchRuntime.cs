@@ -1,4 +1,5 @@
 using UnrealSharp.Attributes;
+using UnrealSharp.Engine;
 using UnrealSharp.UnrealSharpCore;
 
 namespace LunyScratch
@@ -23,10 +24,10 @@ namespace LunyScratch
 			if (s_Instance != null)
 				throw new Exception($"{nameof(UScratchRuntime)} singleton duplication");
 
-			_context = new UnrealScratchRuntimeContext(this);
+			_context = new ScratchRuntimeContext(this);
 			_runner = new BlockRunner(_context);
 			s_Instance = this;
-			GameEngine.Initialize(s_Instance, new UnrealActions(), new MinimalAssetRegistry());
+			GameEngine.Initialize(s_Instance, new UnrealActions(), new ScratchAssetRegistry());
 
 			IsTickable = true;
 		}
@@ -49,7 +50,11 @@ namespace LunyScratch
 			GameEngine.Shutdown();
 		}
 
-		protected override void Tick(Single deltaTime) => _runner.ProcessUpdate(deltaTime);
+		protected override void Tick(Single deltaTime)
+		{
+			_runner.ProcessUpdate(deltaTime);
+			_runner.ProcessPhysicsUpdate(GameEngine.Actions.GetFixedDeltaTimeInSeconds());
+		}
 
 		public void RunBlock(IScratchBlock block) => _runner.AddBlock(block);
 	}

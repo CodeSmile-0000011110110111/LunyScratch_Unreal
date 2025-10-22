@@ -3,13 +3,13 @@ using UnrealSharp.Engine;
 
 namespace LunyScratch
 {
-	public class UnrealEngineObject : IEngineObject
+	public class ScratchEngineObject : IEngineObject
 	{
 		private readonly UObject _engineObject;
 
-		public static implicit operator UnrealEngineObject(UObject unrealObject) => new(unrealObject);
+		public static implicit operator ScratchEngineObject(UObject unrealObject) => new(unrealObject);
 
-		public UnrealEngineObject(UObject unrealObject) => _engineObject = unrealObject;
+		public ScratchEngineObject(UObject unrealObject) => _engineObject = unrealObject;
 
 		public void SetEnabled(Boolean enabled)
 		{

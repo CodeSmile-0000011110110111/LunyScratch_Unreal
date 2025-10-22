@@ -3,16 +3,16 @@ using UnrealSharp.UnrealSharpCore;
 
 namespace LunyScratch
 {
-	internal sealed class UnrealScratchRuntimeContext : IScratchContext
+	internal sealed class ScratchRuntimeContext : IScratchContext
 	{
 		private readonly UScratchRuntime _owner;
 
-		public UnrealScratchRuntimeContext(UScratchRuntime owner) => _owner = owner;
+		public ScratchRuntimeContext(UScratchRuntime owner) => _owner = owner;
 
 		public IRigidbody Rigidbody => throw new Exception("Runtime context does not have Rigidbody");
 		public ITransform Transform => throw new Exception("Runtime context does not have Transform");
 		public IEngineAudioSource Audio => null; // No audio on runtime
-		public IEngineObject Self => new UnrealEngineObject(_owner);
+		public IEngineObject Self => new ScratchEngineObject(_owner);
 		public IScratchRunner Runner => _owner;
 		public IEngineCamera ActiveCamera => throw new NotSupportedException("ActiveCamera is not implemented for Unreal example");
 

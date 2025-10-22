@@ -2,7 +2,7 @@ using System;
 
 namespace LunyScratch
 {
-	internal sealed class MinimalAssetRegistry : AssetRegistry.IAssetRegistry
+	internal sealed class ScratchAssetRegistry : AssetRegistry.IAssetRegistry
 	{
 		public T Get<T>(string path) where T : class, IEngineAsset => GetPlaceholder<T>();
 

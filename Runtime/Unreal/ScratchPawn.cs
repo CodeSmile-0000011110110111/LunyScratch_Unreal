@@ -25,6 +25,7 @@ namespace LunyScratch
 		{
 			base.Tick(deltaTime);
 			_runner?.ProcessUpdate(deltaTime);
+			_runner?.ProcessPhysicsUpdate(GameEngine.Actions.GetFixedDeltaTimeInSeconds());
 			if (_context != null && _context.IsScheduledForDestruction)
 			{
 				DestroyActor();

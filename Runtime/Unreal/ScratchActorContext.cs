@@ -22,7 +22,7 @@ namespace LunyScratch
 		public ITransform Transform => null; // Not implemented for Unreal example
 		public IEngineAudioSource Audio => null; // Not implemented for Unreal example
 
-		public IEngineObject Self => new UnrealEngineObject(_owner);
+		public IEngineObject Self => new ScratchEngineObject(_owner);
 		public IScratchRunner Runner => _owner as IScratchRunner;
 		public IEngineCamera ActiveCamera => throw new NotSupportedException("ActiveCamera is not implemented for Unreal example");
 
@@ -84,7 +84,7 @@ namespace LunyScratch
 
 			if (found != null)
 			{
-				var engineObject = new UnrealEngineObject(found);
+				var engineObject = new ScratchEngineObject(found);
 				_childrenByName[name] = engineObject;
 				return engineObject;
 			}
@@ -97,7 +97,7 @@ namespace LunyScratch
 				{
 					if (comp != null && string.Equals(GetObjectName(comp), name, System.StringComparison.InvariantCulture))
 					{
-						var engineObject = new UnrealEngineObject(comp);
+						var engineObject = new ScratchEngineObject(comp);
 						_childrenByName[name] = engineObject;
 						return engineObject;
 					}
