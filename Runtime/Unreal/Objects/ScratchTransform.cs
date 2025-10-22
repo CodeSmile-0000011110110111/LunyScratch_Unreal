@@ -15,14 +15,9 @@ namespace LunyScratch
 		{
 			get
 			{
-				var root = Root;
-				if (root != null)
-				{
-					var pos = root.GetSocketLocation(FName.None);
-					return new ScratchVector3(pos);
-				}
-				// Fallback: use actor bounds origin
-				_owner.GetActorBounds(false, out var origin, out _);
+				// Use runtime world position based on actor bounds origin to account for physics-simulated children
+				//_owner.GetActorBounds(false, out var origin, out _);
+				var origin = Root.GetSocketLocation(FName.None);
 				return new ScratchVector3(origin);
 			}
 		}

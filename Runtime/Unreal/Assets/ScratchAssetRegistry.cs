@@ -22,7 +22,7 @@ namespace LunyScratch
 				path = $"/Game/{path}.{filename}_C";
 
 				var quoted = path.StartsWith("Blueprint'", StringComparison.Ordinal) ? path : $"Blueprint'{path}'";
-				GameEngine.Actions.LogInfo("Try Loading: " + quoted);
+				//GameEngine.Actions.LogInfo("Try Loading: " + quoted);
 				var cls = UObject.StaticLoadObject<UClass>(quoted);
 				if (cls != null)
 					return cls;

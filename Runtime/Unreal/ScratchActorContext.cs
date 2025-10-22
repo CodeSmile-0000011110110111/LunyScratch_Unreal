@@ -16,10 +16,54 @@ namespace LunyScratch
 
 		private IRigidbody? _rigidbody;
 		private ITransform? _transform;
+		private IEngineAudioSource? _audio;
+		private Boolean _audioCached;
 
 		public IRigidbody Rigidbody => _rigidbody ??= new ScratchRigidbody(_owner);
 		public ITransform Transform => _transform ??= new ScratchTransform(_owner);
-		public IEngineAudioSource Audio => null; // Not implemented for Unreal example
+		public IEngineAudioSource Audio
+		{
+			get
+			{
+				if (!_audioCached)
+				{
+					UAudioComponent audioComp = null;
+					// Search the owner's scene component hierarchy for an AudioComponent
+					var root = _owner.GetComponentByClass<USceneComponent>();
+					if (root != null)
+					{
+						IList<USceneComponent> allDescendants;
+						root.GetChildrenComponents(true, out allDescendants);
+						if (allDescendants != null)
+						{
+							foreach (var child in allDescendants)
+							{
+								if (child is UAudioComponent ac)
+								{
+									audioComp = ac;
+									break;
+								}
+							}
+						}
+					}
+					// If none in children, try any audio component on the actor (fallback)
+					if (audioComp == null)
+					{
+						var actorAudio = _owner.GetComponentsByClass<UAudioComponent>();
+						if (actorAudio != null)
+						{
+							foreach (var ac in actorAudio)
+							{
+								if (ac != null) { audioComp = ac; break; }
+							}
+						}
+					}
+					_audio = audioComp != null ? new ScratchAudioComponent(_owner, audioComp) : null;
+					_audioCached = true;
+				}
+				return _audio;
+			}
+		}
 
 		public IEngineObject Self => new ScratchEngineObject(_owner);
 		public IScratchRunner Runner => _owner as IScratchRunner;

@@ -8,6 +8,8 @@ namespace LunyScratch
 	{
 		private static APlayerController? PlayerController => UGameplayStatics.GetPlayerController(0);
 
+		private static Boolean IsValid(in FKey key) => key.IsValid;
+
 		public Double GetFixedDeltaTimeInSeconds() => 1.0 / 60.0;
 		public Double GetCurrentTimeInSeconds() => UGameplayStatics.TimeSeconds;
 
@@ -115,8 +117,6 @@ namespace LunyScratch
 			return IsValid(fkey) && pc.WasInputKeyJustReleased(fkey);
 		}
 
-		private static Boolean IsValid(in FKey key) => key.IsValid;
-
 		public IEngineObject InstantiatePrefab(IEnginePrefabAsset prefab, ITransform transform)
 		{
 			if (prefab is not ScratchPrefabAsset bp || bp.BlueprintClass == null)
@@ -133,19 +133,19 @@ namespace LunyScratch
 			// Build spawn transform from engine-agnostic transform
 			var pos = transform.Position;
 			var fwd = transform.Forward;
-			var location = new FVector(pos.X, pos.Z, pos.Y); // reverse mapping of ScratchVector3(FVector)
+			var location = new FVector(pos.X, pos.Z, pos.Y);
 			var forward = new FVector(fwd.X, fwd.Z, fwd.Y);
 			var rotator = MathLibrary.MakeRotFromX(forward);
-   var spawnXform = new FTransform(rotator, location, new FVector(1, 1, 1));
+			var spawnTransform = new FTransform(rotator, location, FVector.One);
 
 			// Spawn actor from Blueprint Class
-			var actor = UGameplayStatics.BeginDeferredActorSpawnFromClass(bp.BlueprintClass, spawnXform);
+			var actor = UGameplayStatics.BeginDeferredActorSpawnFromClass(bp.BlueprintClass, spawnTransform);
 			if (actor == null)
 			{
 				LogWarn("InstantiatePrefab: Failed to begin spawn for selected Blueprint class.");
 				return null;
 			}
-			UGameplayStatics.FinishSpawningActor(actor, spawnXform);
+			UGameplayStatics.FinishSpawningActor(actor, spawnTransform);
 			return new ScratchEngineObject(actor);
 		}
 

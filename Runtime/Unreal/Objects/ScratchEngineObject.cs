@@ -23,7 +23,7 @@ namespace LunyScratch
 					break;
 
 				case USceneComponent sceneComponent:
-					sceneComponent.SetHiddenInGame(!enabled);
+					sceneComponent.SetVisibility(enabled, true);
 					break;
 
 				default:
