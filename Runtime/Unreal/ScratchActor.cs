@@ -41,6 +41,8 @@ namespace LunyScratch
 			base.Dispose();
 			_runner?.Dispose();
 			_context?.Dispose();
+			_runner = null;
+			_context = null;
 		}
 
 		// IScratchRunner implementation

@@ -46,8 +46,13 @@ namespace LunyScratch
 		{
 			base.Dispose();
 			_runner?.Dispose();
-			s_Instance = null;
+			_context?.Dispose();
+			_runner = null;
+			_context = null;
+
 			GameEngine.Shutdown();
+
+			s_Instance = null;
 		}
 
 		protected override void Tick(Single deltaTime)
