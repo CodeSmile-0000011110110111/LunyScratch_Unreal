@@ -119,8 +119,34 @@ namespace LunyScratch
 
 		public IEngineObject InstantiatePrefab(IEnginePrefabAsset prefab, ITransform transform)
 		{
-			LogWarn($"Instantiate not implemented: {prefab}, {transform}");
-			return null;
+			if (prefab is not ScratchPrefabAsset bp || bp.BlueprintClass == null)
+			{
+				LogWarn("InstantiatePrefab: Invalid prefab asset.");
+				return null;
+			}
+			if (transform == null)
+			{
+				LogWarn("InstantiatePrefab: Transform is null.");
+				return null;
+			}
+
+			// Build spawn transform from engine-agnostic transform
+			var pos = transform.Position;
+			var fwd = transform.Forward;
+			var location = new FVector(pos.X, pos.Z, pos.Y); // reverse mapping of ScratchVector3(FVector)
+			var forward = new FVector(fwd.X, fwd.Z, fwd.Y);
+			var rotator = MathLibrary.MakeRotFromX(forward);
+   var spawnXform = new FTransform(rotator, location, new FVector(1, 1, 1));
+
+			// Spawn actor from Blueprint Class
+			var actor = UGameplayStatics.BeginDeferredActorSpawnFromClass(bp.BlueprintClass, spawnXform);
+			if (actor == null)
+			{
+				LogWarn("InstantiatePrefab: Failed to begin spawn for selected Blueprint class.");
+				return null;
+			}
+			UGameplayStatics.FinishSpawningActor(actor, spawnXform);
+			return new ScratchEngineObject(actor);
 		}
 
 		public void ReloadCurrentScene() => throw new NotImplementedException();
