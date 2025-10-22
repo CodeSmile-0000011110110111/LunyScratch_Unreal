@@ -1,5 +1,3 @@
-using System;
-using UnrealSharp.CoreUObject;
 using UnrealSharp.Engine;
 
 namespace LunyScratch
@@ -8,7 +6,7 @@ namespace LunyScratch
 	/// Unreal adapter that wraps an AudioComponent and exposes a simple Play() call
 	/// compatible with IEngineAudioSource.
 	/// </summary>
- internal sealed class ScratchAudioComponent : IEngineAudioSource
+	internal sealed class ScratchAudioComponent : IEngineAudioSource
 	{
 		private readonly UAudioComponent _audio;
 		private readonly AActor _owner;
@@ -19,16 +17,6 @@ namespace LunyScratch
 			_audio = audio ?? throw new ArgumentNullException(nameof(audio));
 		}
 
-		public void Play()
-		{
-			/*
-			// Ensure sound plays at the owning actor's current runtime position using bounds origin
-			_owner.GetActorBounds(false, out var origin, out _);
-			// Move the audio component to the actor's current position (no sweep, no teleport)
-			_audio.SetWorldLocation(origin, false, out FHitResult _, false);
-			*/
-			// Trigger one-shot playback
-			_audio.Play();
-		}
+		public void Play() => _audio.Play();
 	}
 }
