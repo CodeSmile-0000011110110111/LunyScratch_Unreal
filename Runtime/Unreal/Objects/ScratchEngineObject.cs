@@ -31,6 +31,6 @@ namespace LunyScratch
 			}
 		}
 
-		public Object GetEngineObject() => _engineObject;
+		public T GetEngineObject<T>() where T : class => _engineObject as T;
 	}
 }

@@ -1,19 +1,25 @@
 using UnrealSharp.Attributes;
-using UnrealSharp.Engine;
 using UnrealSharp.UnrealSharpCore;
 
 namespace LunyScratch
 {
-	[UClass]
+ [UClass]
 	public sealed class UScratchRuntime : UCSGameInstanceSubsystem, IEngineRuntime
 	{
 		private static UScratchRuntime? s_Instance;
+
 
 		private readonly Table _variables = new();
 		private BlockRunner _runner;
 		private IScratchContext _context;
 
+		private ScratchHUD? _hud;
+		private ScratchMenu? _menu;
+		public ScratchHUD HUD => _hud ??= new ScratchHUD();
+		public ScratchMenu Menu => _menu ??= new ScratchMenu();
+
 		public static UScratchRuntime Instance => s_Instance ?? throw new Exception("Scratch Runtime: Instance not initialized");
+		public static UScratchRuntime Singleton => Instance; // alias for legacy accessors
 
 		public Table Variables => _variables;
 
@@ -62,5 +68,12 @@ namespace LunyScratch
 		}
 
 		public void RunBlock(IScratchBlock block) => _runner.AddBlock(block);
+	}
+
+	// Backward-compatible static proxy to preserve ScratchRuntime.* call sites
+	public static class ScratchRuntime
+	{
+		public static UScratchRuntime Instance => UScratchRuntime.Instance;
+		public static UScratchRuntime Singleton => UScratchRuntime.Singleton;
 	}
 }

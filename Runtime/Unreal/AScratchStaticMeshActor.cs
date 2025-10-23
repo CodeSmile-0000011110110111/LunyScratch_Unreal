@@ -12,7 +12,7 @@ namespace LunyScratch
 		private ScratchActorContext _context;
 
 		public Table Variables => _variables;
-		public Table GlobalVariables => UScratchRuntime.Instance.Variables;
+		public Table GlobalVariables => ScratchRuntime.Instance.Variables;
 
 		// IScratchRunner implementation
 		public void Run(params IScratchBlock[] blocks) => _runner.AddBlock(Blocks.Sequence(blocks));

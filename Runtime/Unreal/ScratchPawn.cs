@@ -12,7 +12,10 @@ namespace LunyScratch
 		private ScratchActorContext _context;
 
 		public Table Variables => _variables;
-		public Table GlobalVariables => UScratchRuntime.Instance.Variables;
+		public Table GlobalVariables => ScratchRuntime.Instance.Variables;
+
+		public ScratchHUD HUD => ScratchRuntime.Singleton.HUD;
+		public ScratchMenu Menu => ScratchRuntime.Singleton.Menu;
 
 		// IScratchRunner implementation
 		public void Run(params IScratchBlock[] blocks) => _runner.AddBlock(Blocks.Sequence(blocks));
@@ -63,18 +66,14 @@ namespace LunyScratch
 		}
 
 		[UFunction]
-		private void HandleActorBeginOverlap(AActor overlappedActor, AActor otherActor)
-		{
+		private void HandleActorBeginOverlap(AActor overlappedActor, AActor otherActor) =>
 			//PrintString($"ScratchPawn.HandleActorBeginOverlap({overlappedActor}, {otherActor})");
 			_context?.EnqueueCollisionEnter(otherActor);
-		}
 
 		[UFunction]
-		private void HandleActorHit(AActor selfActor, AActor otherActor, FVector normalImpulse, FHitResult hit)
-		{
+		private void HandleActorHit(AActor selfActor, AActor otherActor, FVector normalImpulse, FHitResult hit) =>
 			//PrintString($"ScratchPawn.HandleActorBeginOverlap({selfActor}, {otherActor})");
 			_context?.EnqueueCollisionEnter(otherActor);
-		}
 
 		protected virtual void OnScratchReady() {}
 		protected virtual void OnUpdate(Single deltaTime) {}

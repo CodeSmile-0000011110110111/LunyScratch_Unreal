@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using UnrealSharp;
-using UnrealSharp.Attributes;
 using UnrealSharp.CoreUObject;
 using UnrealSharp.Engine;
 
@@ -53,9 +50,11 @@ namespace LunyScratch
 						if (actorAudio != null)
 						{
 							foreach (var ac in actorAudio)
-							{
-								if (ac != null) { audioComp = ac; break; }
-							}
+								if (ac != null)
+								{
+									audioComp = ac;
+									break;
+								}
 						}
 					}
 					_audio = audioComp != null ? new ScratchAudioComponent(_owner, audioComp) : null;
@@ -67,7 +66,7 @@ namespace LunyScratch
 
 		public IEngineObject Self => new ScratchEngineObject(_owner);
 		public IScratchRunner Runner => _owner as IScratchRunner;
-		public IEngineCamera ActiveCamera => throw new NotSupportedException("ActiveCamera is not implemented for Unreal example");
+		public IEngineCamera ActiveCamera => null;
 		internal Boolean IsScheduledForDestruction => _scheduledForDestruction;
 
 		public ScratchActorContext(AActor owner)
@@ -88,8 +87,8 @@ namespace LunyScratch
 
 		public void SetSelfComponentEnabled(Boolean enabled) => _owner.ActorTickEnabled = enabled;
 
-		public IEngineHUD GetEngineHUD() => throw new NotSupportedException("HUD is not implemented for Unreal example");
-		public IEngineMenu GetEngineMenu() => throw new NotSupportedException("Menu is not implemented for Unreal example");
+		public IEngineHUD GetEngineHUD() => UScratchRuntime.Instance?.HUD;
+		public IEngineMenu GetEngineMenu() => UScratchRuntime.Instance?.Menu;
 
 		public void ScheduleDestroy() => _scheduledForDestruction = true;
 
@@ -122,7 +121,7 @@ namespace LunyScratch
 						break;
 					}
 				}
-				
+
 				// If not found, recurse through all descendants
 				if (found == null)
 				{
@@ -164,7 +163,7 @@ namespace LunyScratch
 			_childrenByName[name] = null; // cache miss
 			return null;
 		}
-		
+
 		public Boolean QueryCollisionEnterEvents(String nameFilter, String tagFilter)
 		{
 			foreach (var other in _collisionEnterQueue)
@@ -190,6 +189,5 @@ namespace LunyScratch
 		}
 
 		public void ClearCollisionEventQueues() => _collisionEnterQueue.Clear();
-
 	}
 }

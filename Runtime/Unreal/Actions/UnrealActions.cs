@@ -117,24 +117,24 @@ namespace LunyScratch
 			return IsValid(fkey) && pc.WasInputKeyJustReleased(fkey);
 		}
 
-		public IEngineObject InstantiatePrefab(IEnginePrefabAsset prefab, ITransform transform)
+		public IEngineObject InstantiatePrefab(IEnginePrefabAsset prefab, ITransform transform = null)
 		{
 			if (prefab is not ScratchPrefabAsset bp || bp.BlueprintClass == null)
 			{
 				LogWarn("InstantiatePrefab: Invalid prefab asset.");
 				return null;
 			}
-			if (transform == null)
+
+			var location = FVector.Zero;
+			var forward = FVector.Zero;
+			if (transform != null)
 			{
-				LogWarn("InstantiatePrefab: Transform is null.");
-				return null;
+				var pos = transform.Position;
+				var fwd = transform.Forward;
+				location = new FVector(pos.X, pos.Z, pos.Y);
+				forward = new FVector(fwd.X, fwd.Z, fwd.Y);
 			}
 
-			// Build spawn transform from engine-agnostic transform
-			var pos = transform.Position;
-			var fwd = transform.Forward;
-			var location = new FVector(pos.X, pos.Z, pos.Y);
-			var forward = new FVector(fwd.X, fwd.Z, fwd.Y);
 			var rotator = MathLibrary.MakeRotFromX(forward);
 			var spawnTransform = new FTransform(rotator, location, FVector.One);
 
@@ -153,11 +153,11 @@ namespace LunyScratch
 
 		public void QuitApplication() => throw new NotImplementedException();
 		public Double GetDeltaTimeInSeconds() => UGameplayStatics.WorldDeltaSeconds;
-		public void LogInfo(String message) => AActor.PrintString(message, printToScreen: false);
+		public void LogInfo(String message) => AActor.PrintString(message, printToScreen: false, color: FLinearColor.LightGray);
 
-		public void LogWarn(String message) => AActor.PrintString(message, printToScreen: false, color: new FLinearColor(0f, 1f, 1f));
+		public void LogWarn(String message) => AActor.PrintString(message, printToScreen: false, color: FLinearColor.Yellow);
 
-		public void LogError(String message) => AActor.PrintString(message, printToScreen: false, color: new FLinearColor(1f, 0f, 0f));
+		public void LogError(String message) => AActor.PrintString(message, printToScreen: false, color: FLinearColor.Red);
 		public void ShowMessage(String message, Double duration = 2f) => AActor.PrintString(message, (Single)duration);
 
 		public void Log(String message) => ShowMessage(message);
